@@ -1,7 +1,12 @@
 package result
 
-import "github.com/avivatedgi/results/option"
+import (
+	"github.com/avivatedgi/results/iterator"
+	"github.com/avivatedgi/results/option"
+)
 
+// This Result implementation is based on the one in the Rust's standart library (https://doc.rust-lang.org/stable/std/result/enum.Result.html)
+// The Result represents the result of an operation that may either succeed (Ok) or fail (Err).
 type Result[T any, E error] struct {
 	value *T
 	err   *E
@@ -57,7 +62,9 @@ func (result Result[_, E]) Err() option.Option[E] {
 	return option.None[E]()
 }
 
-// TODO: Iter
+func (result Result[T, _]) Iter() iterator.Iterator[T] {
+	return &iterator.SingleValueIterator[T]{Value: result.value}
+}
 
 // Returns the contained Ok value, consuming the self value.
 // Panics if the value is an Err, with a panic message including the passed message, and the content of the Err.

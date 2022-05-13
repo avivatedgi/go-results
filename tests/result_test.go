@@ -77,6 +77,19 @@ func TestResultErr(t *testing.T) {
 	}
 }
 
+func TestResultIter(t *testing.T) {
+	okIter := result.Ok[int, TestError](1).Iter()
+	errIter := result.Err[int](TestError{}).Iter()
+
+	if okIter.Next().Unwrap() != 1 {
+		t.Error("expected `1st okIter.Next()` to be 1")
+	} else if !okIter.Next().IsNone() {
+		t.Error("expected `2nd okIter.Next()` to be None")
+	} else if !errIter.Next().IsNone() {
+		t.Error("expected `result.Err(...).Iter().Next()` to be None")
+	}
+}
+
 func TestResultExpectSuccess(t *testing.T) {
 	if result.Ok[int, TestError](1).Expect("should not panic") != 1 {
 		t.Error("expected `result.Ok(1).Expect(...)` to be 1")
