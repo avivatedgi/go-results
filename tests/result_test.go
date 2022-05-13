@@ -97,11 +97,7 @@ func TestResultExpectSuccess(t *testing.T) {
 }
 
 func TestResultExpectPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `result.Err(...).Expect` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	result.Err[int](TestError{}).Expect("should panic")
 }
@@ -115,11 +111,7 @@ func TestResultExpectErrSuccess(t *testing.T) {
 }
 
 func TestResultExpectErrPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `result.Ok(...).ExpectErr` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	result.Ok[int, TestError](1).ExpectErr("should panic")
 }
@@ -131,11 +123,7 @@ func TestResultUnwrapSuccess(t *testing.T) {
 }
 
 func TestResultUnwrapPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `result.Err(...).Unwrap()` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	result.Err[int](TestError{}).Unwrap()
 }
@@ -148,11 +136,7 @@ func TestResultUnwrapErrSuccess(t *testing.T) {
 }
 
 func TestResultUnwrapErrPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `result.Ok(...).UnwrapErr()` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	result.Ok[int, TestError](1).UnwrapErr()
 }

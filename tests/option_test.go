@@ -47,11 +47,7 @@ func TestOptionExpectSuccess(t *testing.T) {
 }
 
 func TestOptionExpectPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `a.Expect` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	option.None[int]().Expect("should panic")
 }
@@ -63,11 +59,7 @@ func TestOptionUnwrapSuccess(t *testing.T) {
 }
 
 func TestOptionUnwrapPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("expected `a.Unwrap` to panic")
-		}
-	}()
+	defer ShouldPanic(t)
 
 	option.None[int]().Unwrap()
 }
