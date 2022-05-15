@@ -1,8 +1,8 @@
 package result
 
 import (
-	"github.com/avivatedgi/results/iterator"
-	"github.com/avivatedgi/results/option"
+	"github.com/avivatedgi/go-rust-std/iterator"
+	"github.com/avivatedgi/go-rust-std/option"
 )
 
 // This Result implementation is based on the one in the Rust's standart library (https://doc.rust-lang.org/stable/std/result/enum.Result.html)
@@ -19,7 +19,7 @@ func Ok[T any, E error](value T) Result[T, E] {
 
 // Return a new Result containing an error.
 func Err[T any, E error](err E) Result[T, E] {
-	return Result[T, E]{value: nil, err: &err}
+	return Result[T, E]{value: nil, err: &err}	
 }
 
 // Returns true if the result is Ok.

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/avivatedgi/results/result"
+	"github.com/avivatedgi/go-rust-std/result"
 )
 
 type TestError struct {

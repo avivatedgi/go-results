@@ -1,6 +1,6 @@
 package iterator
 
-import "github.com/avivatedgi/results/option"
+import "github.com/avivatedgi/go-rust-std/option"
 
 type Iterator[T any] interface {
 	// Advances the iterator and return the next value.

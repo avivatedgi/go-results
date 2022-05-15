@@ -1,8 +1,8 @@
 package collections
 
 import (
-	"github.com/avivatedgi/results/iterator"
-	"github.com/avivatedgi/results/option"
+	"github.com/avivatedgi/go-rust-std/iterator"
+	"github.com/avivatedgi/go-rust-std/option"
 )
 
 type Map[K comparable, V any] map[K]V

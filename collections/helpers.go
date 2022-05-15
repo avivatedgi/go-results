@@ -1,7 +1,7 @@
 package collections
 
 import (
-	"github.com/avivatedgi/results/option"
+	"github.com/avivatedgi/go-rust-std/option"
 )
 
 type sliceIterator[T any] struct {

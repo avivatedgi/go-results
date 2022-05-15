@@ -1,6 +1,6 @@
 package iterator
 
-import "github.com/avivatedgi/results/option"
+import "github.com/avivatedgi/go-rust-std/option"
 
 type SingleValueIterator[T any] struct {
 	Value *T

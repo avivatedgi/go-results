@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/avivatedgi/results/option"
+	"github.com/avivatedgi/go-rust-std/option"
 )
 
 func TestOptionNone(t *testing.T) {

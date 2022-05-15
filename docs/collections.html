@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Go Rust Std - collections Docs</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <style type="text/css">
+
+html {
+font-size: 62.5%;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+body {
+font-size: 1.8rem;
+line-height: 1.618;
+max-width: 38em;
+margin: auto;
+color: #4a4a4a;
+background-color: #f9f9f9;
+padding: 13px; }
+@media (max-width: 684px) {
+body {
+font-size: 1.53rem; } }
+@media (max-width: 382px) {
+body {
+font-size: 1.35rem; } }
+h1, h2, h3, h4, h5, h6 {
+line-height: 1.1;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+font-weight: 700;
+margin-top: 3rem;
+margin-bottom: 1.5rem;
+overflow-wrap: break-word;
+word-wrap: break-word;
+-ms-word-break: break-all;
+word-break: break-word;
+-ms-hyphens: auto;
+-moz-hyphens: auto;
+-webkit-hyphens: auto;
+hyphens: auto; }
+h1 {
+font-size: 2.35em; }
+h2 {
+font-size: 2.00em; }
+h3 {
+font-size: 1.75em; }
+h4 {
+font-size: 1.5em; }
+h5 {
+font-size: 1.25em; }
+h6 {
+font-size: 1em; }
+p {
+margin-top: 0px;
+margin-bottom: 2.5rem; }
+small, sub, sup {
+font-size: 75%; }
+hr {
+border-color: #2c8898; }
+a {
+text-decoration: none;
+color: #2c8898; }
+a:hover {
+color: #982c61;
+border-bottom: 2px solid #4a4a4a; }
+ul {
+padding-left: 1.4em;
+margin-top: 0px;
+margin-bottom: 2.5rem; }
+li {
+margin-bottom: 0.4em; }
+blockquote {
+margin-left: 0px;
+margin-right: 0px;
+padding-left: 1em;
+padding-top: 0.8em;
+padding-bottom: 0.8em;
+padding-right: 0.8em;
+border-left: 5px solid #2c8898;
+margin-bottom: 2.5rem;
+background-color: #f1f1f1; }
+blockquote p {
+margin-bottom: 0; }
+img {
+height: auto;
+max-width: 100%;
+margin-top: 0px;
+margin-bottom: 2.5rem; }
+
+pre {
+background-color: #f1f1f1;
+display: block;
+padding: 1em;
+overflow-x: auto;
+margin-top: 0px;
+margin-bottom: 2.5rem; }
+code {
+font-size: 0.9em;
+padding: 0 0.5em;
+background-color: #f1f1f1;
+white-space: pre-wrap; }
+pre > code {
+padding: 0;
+background-color: transparent;
+white-space: pre; }
+
+table {
+text-align: justify;
+width: 100%;
+border-collapse: collapse; }
+td, th {
+padding: 0.5em;
+border-bottom: 1px solid #f1f1f1; }
+
+input, textarea {
+border: 1px solid #4a4a4a; }
+input:focus, textarea:focus {
+border: 1px solid #2c8898; }
+textarea {
+width: 100%; }
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+display: inline-block;
+padding: 5px 10px;
+text-align: center;
+text-decoration: none;
+white-space: nowrap;
+background-color: #2c8898;
+color: #f9f9f9;
+border-radius: 1px;
+border: 1px solid #2c8898;
+cursor: pointer;
+box-sizing: border-box; }
+.button[disabled], button[disabled], input[type="submit"][disabled], input[type="reset"][disabled], input[type="button"][disabled] {
+cursor: default;
+opacity: .5; }
+.button:focus:enabled, .button:hover:enabled, button:focus:enabled, button:hover:enabled, input[type="submit"]:focus:enabled, input[type="submit"]:hover:enabled, input[type="reset"]:focus:enabled, input[type="reset"]:hover:enabled, input[type="button"]:focus:enabled, input[type="button"]:hover:enabled {
+background-color: #982c61;
+border-color: #982c61;
+color: #f9f9f9;
+outline: 0; }
+textarea, select, input[type] {
+color: #4a4a4a;
+padding: 6px 10px;
+
+margin-bottom: 10px;
+background-color: #f1f1f1;
+border: 1px solid #f1f1f1;
+border-radius: 4px;
+box-shadow: none;
+box-sizing: border-box; }
+textarea:focus, select:focus, input[type]:focus {
+border: 1px solid #2c8898;
+outline: 0; }
+input[type="checkbox"]:focus {
+outline: 1px dotted #2c8898; }
+label, legend, fieldset {
+display: block;
+margin-bottom: .5rem;
+font-weight: 600; }
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Go Rust Std - collections Docs</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#collections" id="toc-collections">collections</a>
+<ul>
+<li><a href="#index" id="toc-index">Index</a></li>
+<li><a href="#func-dedup" id="toc-func-dedup">func Dedup</a></li>
+<li><a href="#func-dedupbykey" id="toc-func-dedupbykey">func
+DedupByKey</a></li>
+<li><a href="#type-map" id="toc-type-map">type Map</a>
+<ul>
+<li><a href="#func-mapk-v-clear" id="toc-func-mapk-v-clear">func
+(*Map[K, V]) Clear</a></li>
+<li><a href="#func-mapk-v-containskey" id="toc-func-mapk-v-containskey">func (Map[K, V]) ContainsKey</a></li>
+<li><a href="#func-mapk-v-drain" id="toc-func-mapk-v-drain">func
+(*Map[K, V]) Drain</a></li>
+<li><a href="#func-mapk-v-entry" id="toc-func-mapk-v-entry">func
+(*Map[K, V]) Entry</a></li>
+<li><a href="#func-mapk-v-foreach" id="toc-func-mapk-v-foreach">func
+(*Map[K, V]) ForEach</a></li>
+<li><a href="#func-mapk-v-get" id="toc-func-mapk-v-get">func (Map[K, V])
+Get</a></li>
+<li><a href="#func-mapk-v-getkeyvalue" id="toc-func-mapk-v-getkeyvalue">func (Map[K, V]) GetKeyValue</a></li>
+<li><a href="#func-mapk-v-insert" id="toc-func-mapk-v-insert">func
+(*Map[K, V]) Insert</a></li>
+<li><a href="#func-mapk-v-iter" id="toc-func-mapk-v-iter">func (Map[K,
+V]) Iter</a></li>
+<li><a href="#func-mapk-v-keyvaluepairs" id="toc-func-mapk-v-keyvaluepairs">func (Map[K, V])
+KeyValuePairs</a></li>
+<li><a href="#func-mapk-_-keys" id="toc-func-mapk-_-keys">func (Map[K,
+_]) Keys</a></li>
+<li><a href="#func-map_-v-values" id="toc-func-map_-v-values">func
+(Map[_, V]) Values</a></li>
+</ul></li>
+<li><a href="#type-mapentry" id="toc-type-mapentry">type MapEntry</a>
+<ul>
+<li><a href="#func-mapentryk-v-andmodify" id="toc-func-mapentryk-v-andmodify">func (MapEntry[K, V])
+AndModify</a></li>
+<li><a href="#func-mapentryk-v-key" id="toc-func-mapentryk-v-key">func
+(MapEntry[K, V]) Key</a></li>
+<li><a href="#func-mapentryk-v-ordefault" id="toc-func-mapentryk-v-ordefault">func (MapEntry[K, V])
+OrDefault</a></li>
+<li><a href="#func-mapentryk-v-orinsert" id="toc-func-mapentryk-v-orinsert">func (MapEntry[K, V])
+OrInsert</a></li>
+<li><a href="#func-mapentryk-v-orinsertwith" id="toc-func-mapentryk-v-orinsertwith">func (MapEntry[K, V])
+OrInsertWith</a></li>
+<li><a href="#func-mapentryk-v-orinsertwithkey" id="toc-func-mapentryk-v-orinsertwithkey">func (MapEntry[K, V])
+OrInsertWithKey</a></li>
+</ul></li>
+<li><a href="#type-pair" id="toc-type-pair">type Pair</a></li>
+<li><a href="#type-vec" id="toc-type-vec">type Vec</a>
+<ul>
+<li><a href="#func-vect-append" id="toc-func-vect-append">func (*Vec[T])
+Append</a></li>
+<li><a href="#func-vect-capacity" id="toc-func-vect-capacity">func
+(Vec[T]) Capacity</a></li>
+<li><a href="#func-vect-clear" id="toc-func-vect-clear">func (*Vec[T])
+Clear</a></li>
+<li><a href="#func-vect-dedupby" id="toc-func-vect-dedupby">func
+(*Vec[T]) DedupBy</a></li>
+<li><a href="#func-vect-drain" id="toc-func-vect-drain">func (*Vec[T])
+Drain</a></li>
+<li><a href="#func-vect-extend" id="toc-func-vect-extend">func (*Vec[T])
+Extend</a></li>
+<li><a href="#func-vect-insert" id="toc-func-vect-insert">func (*Vec[T])
+Insert</a></li>
+<li><a href="#func-vect-isempty" id="toc-func-vect-isempty">func
+(Vec[T]) IsEmpty</a></li>
+<li><a href="#func-vect-len" id="toc-func-vect-len">func (Vec[T])
+Len</a></li>
+<li><a href="#func-vect-pop" id="toc-func-vect-pop">func (*Vec[T])
+Pop</a></li>
+<li><a href="#func-vect-push" id="toc-func-vect-push">func (*Vec[T])
+Push</a></li>
+<li><a href="#func-vect-remove" id="toc-func-vect-remove">func (*Vec[T])
+Remove</a></li>
+<li><a href="#func-vect-resize" id="toc-func-vect-resize">func (*Vec[T])
+Resize</a></li>
+<li><a href="#func-vect-resizewith" id="toc-func-vect-resizewith">func
+(*Vec[T]) ResizeWith</a></li>
+<li><a href="#func-vect-retain" id="toc-func-vect-retain">func (*Vec[T])
+Retain</a></li>
+<li><a href="#func-vect-splice" id="toc-func-vect-splice">func (*Vec[T])
+Splice</a></li>
+<li><a href="#func-vect-splitoff" id="toc-func-vect-splitoff">func
+(Vec[T]) SplitOff</a></li>
+<li><a href="#func-vect-swapremove" id="toc-func-vect-swapremove">func
+(*Vec[T]) SwapRemove</a></li>
+<li><a href="#func-vect-truncate" id="toc-func-vect-truncate">func
+(*Vec[T]) Truncate</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<!-- Code generated by gomarkdoc. DO NOT EDIT -->
+<h1 id="collections">collections</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="st">&quot;github.com/avivatedgi/go-rust-std/collections&quot;</span></span></code></pre></div>
+<h2 id="index">Index</h2>
+<ul>
+<li><a href="#func-dedup">func Dedup[T comparable](vec *Vec[T])</a></li>
+<li><a href="#func-dedupbykey">func DedupByKey[T comparable](vec
+*Vec[T], key func(T) T)</a></li>
+<li><a href="#type-map">type Map</a>
+<ul>
+<li><a href="#func-mapk-v-clear">func (m *Map[K, V]) Clear()</a></li>
+<li><a href="#func-mapk-v-containskey">func (m Map[K, V])
+ContainsKey(key K) bool</a></li>
+<li><a href="#func-mapk-v-drain">func (m *Map[K, V]) Drain()
+iterator.Iterator[Pair[K, V]]</a></li>
+<li><a href="#func-mapk-v-entry">func (m *Map[K, V]) Entry(key K)
+MapEntry[K, V]</a></li>
+<li><a href="#func-mapk-v-foreach">func (m <em>Map[K, V]) ForEach(f
+func(</em>K, *V) bool)</a></li>
+<li><a href="#func-mapk-v-get">func (m Map[K, V]) Get(key K)
+option.Option[V]</a></li>
+<li><a href="#func-mapk-v-getkeyvalue">func (m Map[K, V])
+GetKeyValue(key K) option.Option[Pair[K, V]]</a></li>
+<li><a href="#func-mapk-v-insert">func (m *Map[K, V]) Insert(key K,
+value V) option.Option[V]</a></li>
+<li><a href="#func-mapk-v-iter">func (m Map[K, V]) Iter()
+iterator.Iterator[Pair[K, V]]</a></li>
+<li><a href="#func-mapk-v-keyvaluepairs">func (m Map[K, V])
+KeyValuePairs() []Pair[K, V]</a></li>
+<li><a href="#func-mapk-_-keys">func (m Map[K, _]) Keys() []K</a></li>
+<li><a href="#func-map_-v-values">func (m Map[_, V]) Values()
+[]V</a></li>
+</ul></li>
+<li><a href="#type-mapentry">type MapEntry</a>
+<ul>
+<li><a href="#func-mapentryk-v-andmodify">func (m MapEntry[K, V])
+AndModify(f func(*V)) MapEntry[K, V]</a></li>
+<li><a href="#func-mapentryk-v-key">func (m MapEntry[K, V]) Key()
+K</a></li>
+<li><a href="#func-mapentryk-v-ordefault">func (m MapEntry[K, V])
+OrDefault() V</a></li>
+<li><a href="#func-mapentryk-v-orinsert">func (m MapEntry[K, V])
+OrInsert(value V) V</a></li>
+<li><a href="#func-mapentryk-v-orinsertwith">func (m MapEntry[K, V])
+OrInsertWith(f func() V) V</a></li>
+<li><a href="#func-mapentryk-v-orinsertwithkey">func (m MapEntry[K, V])
+OrInsertWithKey(f func(K) V) V</a></li>
+</ul></li>
+<li><a href="#type-pair">type Pair</a></li>
+<li><a href="#type-vec">type Vec</a>
+<ul>
+<li><a href="#func-vect-append">func (vec <em>Vec[T]) Append(other
+</em>Vec[T])</a></li>
+<li><a href="#func-vect-capacity">func (vec Vec[T]) Capacity()
+int</a></li>
+<li><a href="#func-vect-clear">func (vec *Vec[T]) Clear()</a></li>
+<li><a href="#func-vect-dedupby">func (vec *Vec[T]) DedupBy(f func(T, T)
+bool)</a></li>
+<li><a href="#func-vect-drain">func (vec *Vec[T]) Drain(start, end int)
+iterator.Iterator[T]</a></li>
+<li><a href="#func-vect-extend">func (vec <em>Vec[T]) Extend(other
+</em>Vec[T])</a></li>
+<li><a href="#func-vect-insert">func (vec *Vec[T]) Insert(index int,
+item T)</a></li>
+<li><a href="#func-vect-isempty">func (vec Vec[T]) IsEmpty()
+bool</a></li>
+<li><a href="#func-vect-len">func (vec Vec[T]) Len() int</a></li>
+<li><a href="#func-vect-pop">func (vec *Vec[T]) Pop()
+option.Option[T]</a></li>
+<li><a href="#func-vect-push">func (vec *Vec[T]) Push(item T)</a></li>
+<li><a href="#func-vect-remove">func (vec *Vec[T]) Remove(index int)
+T</a></li>
+<li><a href="#func-vect-resize">func (vec *Vec[T]) Resize(newLength int,
+value T)</a></li>
+<li><a href="#func-vect-resizewith">func (vec *Vec[T])
+ResizeWith(newLength int, f func() T)</a></li>
+<li><a href="#func-vect-retain">func (vec *Vec[T]) Retain(f func(T)
+bool)</a></li>
+<li><a href="#func-vect-splice">func (vec *Vec[T]) Splice(start, end
+int, replaceWith Vec[T]) Vec[T]</a></li>
+<li><a href="#func-vect-splitoff">func (vec Vec[T]) SplitOff(at int)
+Vec[T]</a></li>
+<li><a href="#func-vect-swapremove">func (vec *Vec[T]) SwapRemove(index
+int) T</a></li>
+<li><a href="#func-vect-truncate">func (vec *Vec[T]) Truncate(len
+int)</a></li>
+</ul></li>
+</ul>
+<h2 id="func-dedup">func Dedup</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> Dedup<span class="op">[</span>T comparable<span class="op">](</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span></span></code></pre></div>
+<p>Removes consecutive repeated elements in the vector. If the vector is
+sorted, this removes all duplicates.</p>
+<p>NOTE: This function isn’t a method of the vector because it can only
+work on comparable types, and I didn’t wanted to limit the Vector
+structure to hold only comparable types.</p>
+<h2 id="func-dedupbykey">func DedupByKey</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> DedupByKey<span class="op">[</span>T comparable<span class="op">](</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">],</span> key <span class="kw">func</span><span class="op">(</span>T<span class="op">)</span> T<span class="op">)</span></span></code></pre></div>
+<p>Removes all but the first of consecutive elements in the vector that
+resolve to the same key. If the vector is sorted, this removes all
+duplicates.</p>
+<p>NOTE: This function isn’t a method of the vector because it can only
+work on comparable types, and I didn’t wanted to limit the Vector
+structure to hold only comparable types.</p>
+<h2 id="type-map">type Map</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> Map<span class="op">[</span>K comparable<span class="op">,</span> V any<span class="op">]</span> <span class="kw">map</span><span class="op">[</span>K<span class="op">]</span>V</span></code></pre></div>
+<h3 id="func-mapk-v-clear">func (*Map[K, V]) Clear</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m <span class="op">*</span>Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Clear<span class="op">()</span></span></code></pre></div>
+<p>Clears the map, removing all key-value pairs.</p>
+<h3 id="func-mapk-v-containskey">func (Map[K, V]) ContainsKey</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> ContainsKey<span class="op">(</span>key K<span class="op">)</span> <span class="dt">bool</span></span></code></pre></div>
+<p>Returns true if the map contains a value for the specified key.</p>
+<h3 id="func-mapk-v-drain">func (*Map[K, V]) Drain</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m <span class="op">*</span>Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Drain<span class="op">()</span> iterator<span class="op">.</span>Iterator<span class="op">[</span>Pair<span class="op">[</span>K<span class="op">,</span> V<span class="op">]]</span></span></code></pre></div>
+<p>Clears the map, returning all key-value pairs as an iterator.</p>
+<h3 id="func-mapk-v-entry">func (*Map[K, V]) Entry</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m <span class="op">*</span>Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Entry<span class="op">(</span>key K<span class="op">)</span> MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">]</span></span></code></pre></div>
+<p>Gets the given key’s corresponding entry in the map for in-place
+manipulation. WARNING: In difference from rust, this method does not
+return a reference to the value (!). But, it does match the signatures
+of MapEntry in rust.</p>
+<h3 id="func-mapk-v-foreach">func (*Map[K, V]) ForEach</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m <span class="op">*</span>Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> ForEach<span class="op">(</span>f <span class="kw">func</span><span class="op">(*</span>K<span class="op">,</span> <span class="op">*</span>V<span class="op">)</span> <span class="dt">bool</span><span class="op">)</span></span></code></pre></div>
+<p>Executes the f function once for each map entry. There is an option
+to stop the iteration in the middle, if the handler function returns
+false.</p>
+<h3 id="func-mapk-v-get">func (Map[K, V]) Get</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Get<span class="op">(</span>key K<span class="op">)</span> option<span class="op">.</span>Option<span class="op">[</span>V<span class="op">]</span></span></code></pre></div>
+<p>Returns the value corresponding to the key.</p>
+<h3 id="func-mapk-v-getkeyvalue">func (Map[K, V]) GetKeyValue</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> GetKeyValue<span class="op">(</span>key K<span class="op">)</span> option<span class="op">.</span>Option<span class="op">[</span>Pair<span class="op">[</span>K<span class="op">,</span> V<span class="op">]]</span></span></code></pre></div>
+<p>Returns the key-value pair corresponding to the supplied key in a
+Pair (first is key, second is value).</p>
+<h3 id="func-mapk-v-insert">func (*Map[K, V]) Insert</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m <span class="op">*</span>Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Insert<span class="op">(</span>key K<span class="op">,</span> value V<span class="op">)</span> option<span class="op">.</span>Option<span class="op">[</span>V<span class="op">]</span></span></code></pre></div>
+<p>Inserts a key-value pair into the map. If the map did not have this
+key present, option.None is returned. If the map did have this key
+present, the value is updated, and the old value is returned. The key is
+not updated, though;</p>
+<h3 id="func-mapk-v-iter">func (Map[K, V]) Iter</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Iter<span class="op">()</span> iterator<span class="op">.</span>Iterator<span class="op">[</span>Pair<span class="op">[</span>K<span class="op">,</span> V<span class="op">]]</span></span></code></pre></div>
+<p>Return the map iterator.</p>
+<h3 id="func-mapk-v-keyvaluepairs">func (Map[K, V]) KeyValuePairs</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> KeyValuePairs<span class="op">()</span> <span class="op">[]</span>Pair<span class="op">[</span>K<span class="op">,</span> V<span class="op">]</span></span></code></pre></div>
+<h3 id="func-mapk-_-keys">func (Map[K, _]) Keys</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>K<span class="op">,</span> _<span class="op">])</span> Keys<span class="op">()</span> <span class="op">[]</span>K</span></code></pre></div>
+<p>Retreive all the keys of the map.</p>
+<h3 id="func-map_-v-values">func (Map[_, V]) Values</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m Map<span class="op">[</span>_<span class="op">,</span> V<span class="op">])</span> Values<span class="op">()</span> <span class="op">[]</span>V</span></code></pre></div>
+<p>Retreive all the values of the map</p>
+<h2 id="type-mapentry">type MapEntry</h2>
+<p>This struct is constructed from the Entry method on Map.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> MapEntry<span class="op">[</span>K comparable<span class="op">,</span> V any<span class="op">]</span> <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// contains filtered or unexported fields</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="func-mapentryk-v-andmodify">func (MapEntry[K, V]) AndModify</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> AndModify<span class="op">(</span>f <span class="kw">func</span><span class="op">(*</span>V<span class="op">))</span> MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">]</span></span></code></pre></div>
+<p>Provides access to an occupied entry before any potential inserts
+into the map.</p>
+<h3 id="func-mapentryk-v-key">func (MapEntry[K, V]) Key</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> Key<span class="op">()</span> K</span></code></pre></div>
+<p>Returns this entry’s key.</p>
+<h3 id="func-mapentryk-v-ordefault">func (MapEntry[K, V]) OrDefault</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> OrDefault<span class="op">()</span> V</span></code></pre></div>
+<p>Ensures a value is in the entry by inserting the default value if
+empty. Returns the entry’s value.</p>
+<h3 id="func-mapentryk-v-orinsert">func (MapEntry[K, V]) OrInsert</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> OrInsert<span class="op">(</span>value V<span class="op">)</span> V</span></code></pre></div>
+<p>Ensures a value is in the entry by inserting the default if empty.
+Returns the entry’s value.</p>
+<h3 id="func-mapentryk-v-orinsertwith">func (MapEntry[K, V])
+OrInsertWith</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> OrInsertWith<span class="op">(</span>f <span class="kw">func</span><span class="op">()</span> V<span class="op">)</span> V</span></code></pre></div>
+<p>Ensures a value is in the entry by inserting the result of the
+default function if empty. Returns the entry’s value.</p>
+<h3 id="func-mapentryk-v-orinsertwithkey">func (MapEntry[K, V])
+OrInsertWithKey</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>m MapEntry<span class="op">[</span>K<span class="op">,</span> V<span class="op">])</span> OrInsertWithKey<span class="op">(</span>f <span class="kw">func</span><span class="op">(</span>K<span class="op">)</span> V<span class="op">)</span> V</span></code></pre></div>
+<p>Ensures a value is in the entry by inserting, if empty, the result of
+the default function.</p>
+<h2 id="type-pair">type Pair</h2>
+<p>A struct that represents a pair of values.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> Pair<span class="op">[</span>T any<span class="op">,</span> U any<span class="op">]</span> <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    First  T</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    Second U</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="type-vec">type Vec</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> Vec<span class="op">[</span>T any<span class="op">]</span> <span class="op">[]</span>T</span></code></pre></div>
+<h3 id="func-vect-append">func (*Vec[T]) Append</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Append<span class="op">(</span>other <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span></span></code></pre></div>
+<p>Moves all the elements of other into vec, leaving other empty.</p>
+<h3 id="func-vect-capacity">func (Vec[T]) Capacity</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec Vec<span class="op">[</span>T<span class="op">])</span> Capacity<span class="op">()</span> <span class="dt">int</span></span></code></pre></div>
+<p>Returns the number of elements the vector can hold without
+reallocating.</p>
+<h3 id="func-vect-clear">func (*Vec[T]) Clear</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Clear<span class="op">()</span></span></code></pre></div>
+<p>Clears the vector, removing all values. Note that this method has no
+effect on the allocated capacity of the vector.</p>
+<h3 id="func-vect-dedupby">func (*Vec[T]) DedupBy</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> DedupBy<span class="op">(</span>f <span class="kw">func</span><span class="op">(</span>T<span class="op">,</span> T<span class="op">)</span> <span class="dt">bool</span><span class="op">)</span></span></code></pre></div>
+<p>Removes all but the first of consecutive elements in the vector
+satisfying a given equality relation. The f function is passed the two
+elements from the vector and must determine if the elements compare
+equal. The elements are passed in opposite order from their order in the
+slice, so if f(a, b) returns true, a is removed.</p>
+<h3 id="func-vect-drain">func (*Vec[T]) Drain</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Drain<span class="op">(</span>start<span class="op">,</span> end <span class="dt">int</span><span class="op">)</span> iterator<span class="op">.</span>Iterator<span class="op">[</span>T<span class="op">]</span></span></code></pre></div>
+<p>Removes the specified range from the vector in bulk, returning all
+removed elements as an iterator.</p>
+<h3 id="func-vect-extend">func (*Vec[T]) Extend</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Extend<span class="op">(</span>other <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span></span></code></pre></div>
+<p>Appends all elements in a slice to the Vec.</p>
+<h3 id="func-vect-insert">func (*Vec[T]) Insert</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Insert<span class="op">(</span>index <span class="dt">int</span><span class="op">,</span> item T<span class="op">)</span></span></code></pre></div>
+<p>Inserts an element at position index within the vector, shifting all
+elements after it to the right. Panics if index &gt; len.</p>
+<h3 id="func-vect-isempty">func (Vec[T]) IsEmpty</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec Vec<span class="op">[</span>T<span class="op">])</span> IsEmpty<span class="op">()</span> <span class="dt">bool</span></span></code></pre></div>
+<p>Returns true if the vector contains no elements.</p>
+<h3 id="func-vect-len">func (Vec[T]) Len</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec Vec<span class="op">[</span>T<span class="op">])</span> Len<span class="op">()</span> <span class="dt">int</span></span></code></pre></div>
+<p>Returns the number of elements in the vector, also referred to as its
+‘length’.</p>
+<h3 id="func-vect-pop">func (*Vec[T]) Pop</h3>
+<div class="sourceCode" id="cb35"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Pop<span class="op">()</span> option<span class="op">.</span>Option<span class="op">[</span>T<span class="op">]</span></span></code></pre></div>
+<p>Removes the last element from a vector and returns it, or None if it
+is empty.</p>
+<h3 id="func-vect-push">func (*Vec[T]) Push</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Push<span class="op">(</span>item T<span class="op">)</span></span></code></pre></div>
+<p>Appends an element to the back of a collection.</p>
+<h3 id="func-vect-remove">func (*Vec[T]) Remove</h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Remove<span class="op">(</span>index <span class="dt">int</span><span class="op">)</span> T</span></code></pre></div>
+<p>Removes and returns the element at position index within the vector,
+shifting all elements after it to the left. Note: Because this shifts
+over the remaining elements, it has a worst-case performance of O(n). If
+you don’t need the order of elements to be preserved, use SwapRemove
+instead. Panics if index is out of bounds.</p>
+<h3 id="func-vect-resize">func (*Vec[T]) Resize</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Resize<span class="op">(</span>newLength <span class="dt">int</span><span class="op">,</span> value T<span class="op">)</span></span></code></pre></div>
+<p>Resizes the Vec in-place so that len is equal to newLength. If
+newLength is greater than len, the Vec is extended by the difference,
+with each additional slot filled with value. If newLength is less than
+len, the Vec is simply truncated. Panics if index is less than zero</p>
+<h3 id="func-vect-resizewith">func (*Vec[T]) ResizeWith</h3>
+<div class="sourceCode" id="cb39"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> ResizeWith<span class="op">(</span>newLength <span class="dt">int</span><span class="op">,</span> f <span class="kw">func</span><span class="op">()</span> T<span class="op">)</span></span></code></pre></div>
+<p>Resizes the Vec in-place so that len is equal to newLength. If
+newLength is greater than len, the Vec is extended by the difference,
+with each additional slot filled with the result of calling the function
+f. The return values from f will end up in the Vec in the order they
+have been generated.</p>
+<p>If new_len is less than len, the Vec is simply truncated. Panics if
+index is less than zero</p>
+<h3 id="func-vect-retain">func (*Vec[T]) Retain</h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Retain<span class="op">(</span>f <span class="kw">func</span><span class="op">(</span>T<span class="op">)</span> <span class="dt">bool</span><span class="op">)</span></span></code></pre></div>
+<p>Retains only the elements specified by the predicate. In other words,
+remove all elements e such that f(&amp;e) returns false. This method
+operates in place, visiting each element exactly once in the original
+order, and preserves the order of the retained elements.</p>
+<h3 id="func-vect-splice">func (*Vec[T]) Splice</h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Splice<span class="op">(</span>start<span class="op">,</span> end <span class="dt">int</span><span class="op">,</span> replaceWith Vec<span class="op">[</span>T<span class="op">])</span> Vec<span class="op">[</span>T<span class="op">]</span></span></code></pre></div>
+<p>Creates a splicing vector that replaces the specified range in the
+vector with the given replaceWith vector and returns the removed items.
+replaceWith does not need to be the same length as range. range is
+removed even if the vector is not consumed until the end.</p>
+<h3 id="func-vect-splitoff">func (Vec[T]) SplitOff</h3>
+<div class="sourceCode" id="cb42"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec Vec<span class="op">[</span>T<span class="op">])</span> SplitOff<span class="op">(</span>at <span class="dt">int</span><span class="op">)</span> Vec<span class="op">[</span>T<span class="op">]</span></span></code></pre></div>
+<p>Splits the collection into two at the given index. Returns a newly
+allocated vector containing the elements in the range [at, len]. After
+the call, the original vector will be left containing the elements [0,
+at] with its previous capacity unchanged.</p>
+<h3 id="func-vect-swapremove">func (*Vec[T]) SwapRemove</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> SwapRemove<span class="op">(</span>index <span class="dt">int</span><span class="op">)</span> T</span></code></pre></div>
+<p>Removes an element from the vector and returns it. The removed
+element is replaced by the last element of the vector. This does not
+preserve ordering, but is O(1). If you need to preserve the element
+order, use remove instead. Panics if index is out of bounds.</p>
+<h3 id="func-vect-truncate">func (*Vec[T]) Truncate</h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>vec <span class="op">*</span>Vec<span class="op">[</span>T<span class="op">])</span> Truncate<span class="op">(</span><span class="bu">len</span> <span class="dt">int</span><span class="op">)</span></span></code></pre></div>
+<p>Shortens the vector, keeping the first len elements and dropping the
+rest. If len is greater than the vector’s current length, this has no
+effect. The drain method can emulate truncate, but causes the excess
+elements to be returned instead of dropped. Note that this method has no
+effect on the allocated capacity of the vector. Panics if index is
+negative.</p>
+<p>Generated by <a href="https://github.com/princjef/gomarkdoc">gomarkdoc</a></p>
+</body>
+</html>

@@ -3,8 +3,8 @@ package collections
 import (
 	"fmt"
 
-	"github.com/avivatedgi/results/iterator"
-	"github.com/avivatedgi/results/option"
+	"github.com/avivatedgi/go-rust-std/iterator"
+	"github.com/avivatedgi/go-rust-std/option"
 )
 
 type Vec[T any] []T
@@ -185,16 +185,6 @@ func (vec *Vec[T]) Retain(f func(T) bool) {
 // Creates a splicing vector that replaces the specified range in the vector with the given replaceWith vector and returns the removed items.
 // replaceWith does not need to be the same length as range.
 // range is removed even if the vector is not consumed until the end.
-//
-// This is optimal if:
-//
-// The tail (elements in the vector after range) is empty,
-//
-// or replace_with yields fewer or equal elements than range’s length
-//
-// or the lower bound of its size_hint() is exact.
-//
-// Otherwise, a temporary vector is allocated and the tail is moved twice.
 func (vec *Vec[T]) Splice(start, end int, replaceWith Vec[T]) Vec[T] {
 	// Create a copy of the vecotr
 	copied := make(Vec[T], len(*vec))

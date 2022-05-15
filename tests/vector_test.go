@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/avivatedgi/results/collections"
+	"github.com/avivatedgi/go-rust-std/collections"
 )
 
 func TestVectorSplice(t *testing.T) {
