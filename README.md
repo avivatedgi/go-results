@@ -8,6 +8,6 @@ A package that mimics some of the Rust's Standard Library structure and traits u
 
 * Go 1.18+
 
-## API
+## Documentation
 
-The API of the implemented structures are almost 100% alike their parallel in Rust just in PascalCase instead of snake_case.
+You can find all of the documentation under [https://avivatedgi.github.io/go-rust-std/](https://avivatedgi.github.io/go-rust-std/)
