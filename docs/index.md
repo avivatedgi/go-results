@@ -11,6 +11,5 @@ A package that mimics some of the Rust's Standard Library structure and traits u
 ## Documentation
 
 * [Collections](https://avivatedgi.github.io/go-rust-std/collections)
-* [Iterator](https://avivatedgi.github.io/go-rust-std/iterator)
 * [Result](https://avivatedgi.github.io/go-rust-std/result)
 * [Option](https://avivatedgi.github.io/go-rust-std/option)
