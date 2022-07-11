@@ -1,7 +1,6 @@
 package result
 
 import (
-	"github.com/avivatedgi/go-rust-std/iterator"
 	"github.com/avivatedgi/go-rust-std/option"
 )
 
@@ -19,7 +18,7 @@ func Ok[T any, E error](value T) Result[T, E] {
 
 // Return a new Result containing an error.
 func Err[T any, E error](err E) Result[T, E] {
-	return Result[T, E]{value: nil, err: &err}	
+	return Result[T, E]{value: nil, err: &err}
 }
 
 // Returns true if the result is Ok.
@@ -60,10 +59,6 @@ func (result Result[_, E]) Err() option.Option[E] {
 	}
 
 	return option.None[E]()
-}
-
-func (result Result[T, _]) Iter() iterator.Iterator[T] {
-	return &iterator.SingleValueIterator[T]{Value: result.value}
 }
 
 // Returns the contained Ok value, consuming the self value.

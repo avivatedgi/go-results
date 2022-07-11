@@ -66,15 +66,8 @@ func TestMapDrain(t *testing.T) {
 	}
 
 	index := 0
-	iter := m.Drain()
 
-	for {
-		item := iter.Next()
-		if item.IsNone() {
-			break
-		}
-
-		pair := item.Unwrap()
+	for pair := range m.Drain() {
 		if pair.First != values[index][0] || pair.Second != values[index][1] {
 			t.Errorf("Expected pair to be (%d, %d) but got (%d, %d)", values[index][0], values[index][1], pair.First, pair.Second)
 		}
@@ -172,9 +165,10 @@ func TestMapKeysValuesAndPairs(t *testing.T) {
 	expectedKeys[1] = false
 	expectedKeys[2] = false
 	expectedKeys[3] = false
-	for _, key := range m.Keys() {
+
+	for key := range m.Keys() {
 		if _, ok := expectedKeys[key]; !ok {
-			t.Errorf("Expected key %d to be in expectedKeys", key)
+			t.Errorf("Expected key to be in expectedKeys but got %d", key)
 		}
 
 		expectedKeys[key] = true
@@ -192,12 +186,13 @@ func TestMapKeysValuesAndPairs(t *testing.T) {
 	expectedValues[5] = false
 	expectedValues[6] = false
 	expectedValues[7] = false
-	for _, value := range m.Values() {
-		if _, ok := expectedValues[value]; !ok {
-			t.Errorf("Expected value %d to be in expectedValues", value)
+
+	for val := range m.Values() {
+		if _, ok := expectedValues[val]; !ok {
+			t.Errorf("Expected key to be in expectedValues but got %d", val)
 		}
 
-		expectedValues[value] = true
+		expectedValues[val] = true
 	}
 
 	for value, found := range expectedValues {
@@ -213,7 +208,8 @@ func TestMapKeysValuesAndPairs(t *testing.T) {
 	expectedPairs[1] = 5
 	expectedPairs[2] = 6
 	expectedPairs[3] = 7
-	for _, pair := range m.KeyValuePairs() {
+
+	for pair := range m.Iter() {
 		if _, ok := expectedPairs[pair.First]; !ok {
 			t.Errorf("Expected key %d to be in expectedPairs", pair.First)
 		} else if expectedPairs[pair.First] != pair.Second {
@@ -267,5 +263,47 @@ func TestMapForEach(t *testing.T) {
 
 	if counter != 1 {
 		t.Errorf("Expected counter to be 1 but got %d", counter)
+	}
+}
+
+func TestMapItereator(t *testing.T) {
+	values := [][]int{
+		{1, 5},
+		{2, 6},
+		{3, 7},
+	}
+
+	m := make(collections.Map[int, int])
+
+	for _, pair := range values {
+		m.Insert(pair[0], pair[1])
+	}
+
+	index := 0
+
+	for pair := range m.Iter() {
+		if pair.First != values[index][0] || pair.Second != values[index][1] {
+			t.Errorf("Expected pair to be (%d, %d) but got (%d, %d)", values[index][0], values[index][1], pair.First, pair.Second)
+		}
+
+		index++
+	}
+
+	if index != len(values) {
+		t.Errorf("Expected index to be %d but got %d", len(values), index)
+	}
+}
+
+func TestMapEmptyIterator(t *testing.T) {
+	m := make(collections.Map[int, int])
+
+	index := 0
+
+	for range m.Iter() {
+		index++
+	}
+
+	if index != 0 {
+		t.Errorf("Expected index to be 0 but got %d", index)
 	}
 }

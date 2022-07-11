@@ -1,5 +1,5 @@
 SHELL := bash
-MODULES = collections iterator option result
+MODULES = collections option result
 
 generate-docs:
 	for module in $(MODULES); do \

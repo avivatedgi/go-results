@@ -3,7 +3,6 @@ package collections
 import (
 	"fmt"
 
-	"github.com/avivatedgi/go-rust-std/iterator"
 	"github.com/avivatedgi/go-rust-std/option"
 )
 
@@ -73,9 +72,10 @@ func (vec *Vec[T]) DedupBy(f func(T, T) bool) {
 	*vec = temp
 }
 
-// Removes the specified range from the vector in bulk, returning all removed elements as an iterator.
-func (vec *Vec[T]) Drain(start, end int) iterator.Iterator[T] {
-	return &sliceIterator[T]{data: vec.Splice(start, end, Vec[T]{})}
+// Removes the specified range from the vector in bulk, returning all removed elements as an Iterator.
+func (vec *Vec[T]) Drain(start, end int) Iterator[T] {
+	splice := vec.Splice(start, end, Vec[T]{})
+	return splice.Iter()
 }
 
 // Appends all elements in a slice to the Vec.
@@ -232,4 +232,19 @@ func (vec *Vec[T]) Truncate(len int) {
 	}
 
 	*vec = (*vec)[:len]
+}
+
+// Returns an Iterator to the vector elements.
+func (vec *Vec[T]) Iter() Iterator[T] {
+	ch := make(Iterator[T])
+
+	go func() {
+		for _, item := range *vec {
+			ch.Push(&item)
+		}
+
+		ch.Close()
+	}()
+
+	return ch
 }

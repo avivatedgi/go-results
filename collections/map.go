@@ -1,7 +1,8 @@
 package collections
 
 import (
-	"github.com/avivatedgi/go-rust-std/iterator"
+	"fmt"
+
 	"github.com/avivatedgi/go-rust-std/option"
 )
 
@@ -21,7 +22,7 @@ func (m Map[K, V]) ContainsKey(key K) bool {
 }
 
 // Clears the map, returning all key-value pairs as an iterator.
-func (m *Map[K, V]) Drain() iterator.Iterator[Pair[K, V]] {
+func (m *Map[K, V]) Drain() Iterator[Pair[K, V]] {
 	defer m.Clear()
 	return m.Iter()
 }
@@ -67,39 +68,49 @@ func (m *Map[K, V]) Insert(key K, value V) option.Option[V] {
 }
 
 // Retreive all the keys of the map.
-func (m Map[K, _]) Keys() []K {
-	keys := make([]K, 0, len(m))
+func (m Map[K, _]) Keys() Iterator[K] {
+	ch := make(Iterator[K])
 
-	for k := range m {
-		keys = append(keys, k)
-	}
+	go func() {
+		for k := range m {
+			fmt.Println("Pushing into keys", k)
+			ch.Push(&k)
+		}
 
-	return keys
+		ch.Close()
+	}()
+
+	return ch
 }
 
 // Retreive all the values of the map
-func (m Map[_, V]) Values() []V {
-	values := make([]V, 0, len(m))
+func (m Map[_, V]) Values() Iterator[V] {
+	ch := make(Iterator[V])
 
-	for _, v := range m {
-		values = append(values, v)
-	}
+	go func() {
+		for _, v := range m {
+			ch.Push(&v)
+		}
 
-	return values
-}
+		ch.Close()
+	}()
 
-func (m Map[K, V]) KeyValuePairs() []Pair[K, V] {
-	pairs := make([]Pair[K, V], 0, len(m))
-	for k, v := range m {
-		pairs = append(pairs, Pair[K, V]{First: k, Second: v})
-	}
-
-	return pairs
+	return ch
 }
 
 // Return the map iterator.
-func (m Map[K, V]) Iter() iterator.Iterator[Pair[K, V]] {
-	return &sliceIterator[Pair[K, V]]{data: m.KeyValuePairs(), index: 0}
+func (m Map[K, V]) Iter() Iterator[Pair[K, V]] {
+	ch := make(Iterator[Pair[K, V]])
+
+	go func() {
+		for k, v := range m {
+			ch.Push(&Pair[K, V]{First: k, Second: v})
+		}
+
+		ch.Close()
+	}()
+
+	return ch
 }
 
 // Executes the f function once for each map entry.

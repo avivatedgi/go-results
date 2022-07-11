@@ -88,14 +88,9 @@ func TestVectorDrain(t *testing.T) {
 
 	expectedValues := []int{2, 3}
 	counter := 0
-	for {
-		value := iter.Next()
-		if value.IsNone() {
-			break
-		}
-
-		if value.Unwrap() != expectedValues[counter] {
-			t.Errorf("expected `iter[%d]` to be %d but got %d", counter, expectedValues[counter], value.Unwrap())
+	for value := range iter {
+		if value != expectedValues[counter] {
+			t.Errorf("expected `iter[%d]` to be %d but got %d", counter, expectedValues[counter], value)
 		}
 
 		counter++
@@ -330,4 +325,23 @@ func TestVectorTruncatePanic(t *testing.T) {
 
 	// Check truncate with negative index
 	vec.Truncate(-2)
+}
+
+func TestVectorIterator(t *testing.T) {
+	slice := []int{1, 2, 3, 4, 5}
+	vec := collections.Vec[int](slice)
+
+	index := 0
+
+	for value := range vec.Iter() {
+		if value != slice[index] {
+			t.Errorf("expected `value` to be %d but got %d", slice[index], value)
+		}
+
+		index++
+	}
+
+	if index != len(slice) {
+		t.Errorf("expected `index` to be %d but got %d", len(slice), index)
+	}
 }

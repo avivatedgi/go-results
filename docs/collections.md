@@ -10,19 +10,22 @@ import "github.com/avivatedgi/go-rust-std/collections"
 
 - [func Dedup[T comparable](vec *Vec[T])](<#func-dedup>)
 - [func DedupByKey[T comparable](vec *Vec[T], key func(T) T)](<#func-dedupbykey>)
+- [type Iterator](<#type-iterator>)
+  - [func (ch *Iterator[T]) Close()](<#func-iteratort-close>)
+  - [func (ch *Iterator[T]) IntoVector() *Vec[T]](<#func-iteratort-intovector>)
+  - [func (ch *Iterator[T]) Push(value *T)](<#func-iteratort-push>)
 - [type Map](<#type-map>)
   - [func (m *Map[K, V]) Clear()](<#func-mapk-v-clear>)
   - [func (m Map[K, V]) ContainsKey(key K) bool](<#func-mapk-v-containskey>)
-  - [func (m *Map[K, V]) Drain() iterator.Iterator[Pair[K, V]]](<#func-mapk-v-drain>)
+  - [func (m *Map[K, V]) Drain() Iterator[Pair[K, V]]](<#func-mapk-v-drain>)
   - [func (m *Map[K, V]) Entry(key K) MapEntry[K, V]](<#func-mapk-v-entry>)
   - [func (m *Map[K, V]) ForEach(f func(*K, *V) bool)](<#func-mapk-v-foreach>)
   - [func (m Map[K, V]) Get(key K) option.Option[V]](<#func-mapk-v-get>)
   - [func (m Map[K, V]) GetKeyValue(key K) option.Option[Pair[K, V]]](<#func-mapk-v-getkeyvalue>)
   - [func (m *Map[K, V]) Insert(key K, value V) option.Option[V]](<#func-mapk-v-insert>)
-  - [func (m Map[K, V]) Iter() iterator.Iterator[Pair[K, V]]](<#func-mapk-v-iter>)
-  - [func (m Map[K, V]) KeyValuePairs() []Pair[K, V]](<#func-mapk-v-keyvaluepairs>)
-  - [func (m Map[K, _]) Keys() []K](<#func-mapk-_-keys>)
-  - [func (m Map[_, V]) Values() []V](<#func-map_-v-values>)
+  - [func (m Map[K, V]) Iter() Iterator[Pair[K, V]]](<#func-mapk-v-iter>)
+  - [func (m Map[K, _]) Keys() Iterator[K]](<#func-mapk-_-keys>)
+  - [func (m Map[_, V]) Values() Iterator[V]](<#func-map_-v-values>)
 - [type MapEntry](<#type-mapentry>)
   - [func (m MapEntry[K, V]) AndModify(f func(*V)) MapEntry[K, V]](<#func-mapentryk-v-andmodify>)
   - [func (m MapEntry[K, V]) Key() K](<#func-mapentryk-v-key>)
@@ -36,10 +39,11 @@ import "github.com/avivatedgi/go-rust-std/collections"
   - [func (vec Vec[T]) Capacity() int](<#func-vect-capacity>)
   - [func (vec *Vec[T]) Clear()](<#func-vect-clear>)
   - [func (vec *Vec[T]) DedupBy(f func(T, T) bool)](<#func-vect-dedupby>)
-  - [func (vec *Vec[T]) Drain(start, end int) iterator.Iterator[T]](<#func-vect-drain>)
+  - [func (vec *Vec[T]) Drain(start, end int) Iterator[T]](<#func-vect-drain>)
   - [func (vec *Vec[T]) Extend(other *Vec[T])](<#func-vect-extend>)
   - [func (vec *Vec[T]) Insert(index int, item T)](<#func-vect-insert>)
   - [func (vec Vec[T]) IsEmpty() bool](<#func-vect-isempty>)
+  - [func (vec *Vec[T]) Iter() Iterator[T]](<#func-vect-iter>)
   - [func (vec Vec[T]) Len() int](<#func-vect-len>)
   - [func (vec *Vec[T]) Pop() option.Option[T]](<#func-vect-pop>)
   - [func (vec *Vec[T]) Push(item T)](<#func-vect-push>)
@@ -73,6 +77,38 @@ Removes all but the first of consecutive elements in the vector that resolve to 
 
 NOTE: This function isn't a method of the vector because it can only work on comparable types\, and I didn't wanted to limit the Vector structure to hold only comparable types\.
 
+## type Iterator
+
+A channel based iterator\, used to abstarct a channel as an iterator\. Usage example \(taken from collections\.Vector\[T\]\): for value := range vec\.Iter\(\) \{ fmt\.Println\(value\) \}
+
+```go
+type Iterator[T any] chan T
+```
+
+### func \(\*Iterator\[T\]\) Close
+
+```go
+func (ch *Iterator[T]) Close()
+```
+
+Close the channel\, this function MUST be called after we are done use Push for all of the values we want to iterate\.
+
+### func \(\*Iterator\[T\]\) IntoVector
+
+```go
+func (ch *Iterator[T]) IntoVector() *Vec[T]
+```
+
+Convert an iterator into a vector of the same type\.
+
+### func \(\*Iterator\[T\]\) Push
+
+```go
+func (ch *Iterator[T]) Push(value *T)
+```
+
+Push a value into the channel\, passing nil as the value will be ignored\.
+
 ## type Map
 
 ```go
@@ -98,7 +134,7 @@ Returns true if the map contains a value for the specified key\.
 ### func \(\*Map\[K\, V\]\) Drain
 
 ```go
-func (m *Map[K, V]) Drain() iterator.Iterator[Pair[K, V]]
+func (m *Map[K, V]) Drain() Iterator[Pair[K, V]]
 ```
 
 Clears the map\, returning all key\-value pairs as an iterator\.
@@ -146,21 +182,15 @@ Inserts a key\-value pair into the map\. If the map did not have this key presen
 ### func \(Map\[K\, V\]\) Iter
 
 ```go
-func (m Map[K, V]) Iter() iterator.Iterator[Pair[K, V]]
+func (m Map[K, V]) Iter() Iterator[Pair[K, V]]
 ```
 
 Return the map iterator\.
 
-### func \(Map\[K\, V\]\) KeyValuePairs
-
-```go
-func (m Map[K, V]) KeyValuePairs() []Pair[K, V]
-```
-
 ### func \(Map\[K\, \_\]\) Keys
 
 ```go
-func (m Map[K, _]) Keys() []K
+func (m Map[K, _]) Keys() Iterator[K]
 ```
 
 Retreive all the keys of the map\.
@@ -168,7 +198,7 @@ Retreive all the keys of the map\.
 ### func \(Map\[\_\, V\]\) Values
 
 ```go
-func (m Map[_, V]) Values() []V
+func (m Map[_, V]) Values() Iterator[V]
 ```
 
 Retreive all the values of the map
@@ -283,10 +313,10 @@ Removes all but the first of consecutive elements in the vector satisfying a giv
 ### func \(\*Vec\[T\]\) Drain
 
 ```go
-func (vec *Vec[T]) Drain(start, end int) iterator.Iterator[T]
+func (vec *Vec[T]) Drain(start, end int) Iterator[T]
 ```
 
-Removes the specified range from the vector in bulk\, returning all removed elements as an iterator\.
+Removes the specified range from the vector in bulk\, returning all removed elements as an Iterator\.
 
 ### func \(\*Vec\[T\]\) Extend
 
@@ -311,6 +341,14 @@ func (vec Vec[T]) IsEmpty() bool
 ```
 
 Returns true if the vector contains no elements\.
+
+### func \(\*Vec\[T\]\) Iter
+
+```go
+func (vec *Vec[T]) Iter() Iterator[T]
+```
+
+Returns an Iterator to the vector elements\.
 
 ### func \(Vec\[T\]\) Len
 

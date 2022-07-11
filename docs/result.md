@@ -26,7 +26,6 @@ import "github.com/avivatedgi/go-rust-std/result"
   - [func (result Result[T, E]) IsErrWith(f func(*E) bool) bool](<#func-resultt-e-iserrwith>)
   - [func (result Result[T, E]) IsOk() bool](<#func-resultt-e-isok>)
   - [func (result Result[T, E]) IsOkWith(f func(*T) bool) bool](<#func-resultt-e-isokwith>)
-  - [func (result Result[T, _]) Iter() iterator.Iterator[T]](<#func-resultt-_-iter>)
   - [func (result Result[T, _]) Ok() option.Option[T]](<#func-resultt-_-ok>)
   - [func (result Result[T, E]) Unwrap() T](<#func-resultt-e-unwrap>)
   - [func (result Result[T, E]) UnwrapErr() E](<#func-resultt-e-unwraperr>)
@@ -180,12 +179,6 @@ func (result Result[T, E]) IsOkWith(f func(*T) bool) bool
 ```
 
 Returns true if the result is Ok wrapping a value matching the predicate\.
-
-### func \(Result\[T\, \_\]\) Iter
-
-```go
-func (result Result[T, _]) Iter() iterator.Iterator[T]
-```
 
 ### func \(Result\[T\, \_\]\) Ok
 
